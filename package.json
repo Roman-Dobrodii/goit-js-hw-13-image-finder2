@@ -1,0 +1,32 @@
+{
+  "name": "goit-js-hw-13-image-finder2",
+  "version": "1.0.0",
+  "description": "goit-js-hw-13-image-finder2",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html --public-url /goit-js-hw-13-image-finder2/",
+    "deploy": "gh-pages -d dist",
+    "predeploy": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Roman-Dobrodii/goit-js-hw-13-image-finder2.git"
+  },
+  "author": "Roman-Dobrodii",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Roman-Dobrodii/goit-js-hw-13-image-finder2/issues"
+  },
+  "homepage": "https://Roman-Dobrodii.github.io/goit-js-hw-13-image-finder2",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-handlebars-precompile": "^1.0.2",
+    "parcel-plugin-nuke-dist": "^1.0.1"
+  },
+  "dependencies": {
+    "axios": "^0.21.0",
+    "gh-pages": "^3.1.0",
+    "lodash.debounce": "^4.0.8"
+  }
+}
