@@ -1,66 +1,105 @@
-import servise from './apiService';
+import CardsService from './apiService';
 import cardImage from '../templates/cardTpl.hbs';
 import refs from './refs';
 
-const debounce = require('lodash.debounce');
+const cardsService = new CardsService();
 
-refs.searchForm.addEventListener(
-  'input',
-  debounce(imageSearchInputHandler, 500),
-);
-refs.loadMoreBtn.addEventListener('click', loadMoreBtnHandler);
+refs.searchForm.addEventListener('submit', onSearch);
+refs.loadMoreBtn.addEventListener('click', onLoadMore);
 
-function imageSearchInputHandler(e) {
+function onSearch(e) {
   e.preventDefault();
-  servise.searchQuerry = e.target.value;
-  if (servise.query === '') {
-    hiddenLoadMoreBtn();
-    clearListItems();
-    return;
+
+  cardsService.query = e.currentTarget.elements.query.value;
+
+  if (cardsService.query === '') {
+    return alert('Введи что-то нормальное!');
   }
 
-  clearListItems();
-  servise.resetPage();
-
-  servise.fetchArticles().then(hits => {
-    const markup = buildListItemsTemplate(hits);
-    insertListItems(markup);
-  });
-  noHiddenLoadMoreBtn();
-}
-
-function loadMoreBtnHandler() {
-  refs.loadMoreBtn.disabled = true;
-  servise.fetchArticles().then(hits => {
-    const markup = buildListItemsTemplate(hits);
-    insertListItems(markup);
-    refs.loadMoreBtn.disabled = false;
-    // window.scrollTo(0, 1000);
-
-    window.scrollBy({
-      top: 940,
-      left: 100,
-      behavior: 'smooth',
-    });
+  cardsService.resetPage();
+  cardsService.fetchCards().then(hits => {
+    clearCardsContainer();
+    appendCardsMarkup(hits);
   });
 }
 
-function insertListItems(items) {
-  refs.gallery.insertAdjacentHTML('beforeend', items);
+function onLoadMore() {
+  cardsService.fetchCards().then(appendCardsMarkup);
 }
 
-function buildListItemsTemplate(items) {
-  return cardImage(items);
+function appendCardsMarkup(hits) {
+  refs.gallery.insertAdjacentHTML('beforeend', cardImage(hits));
 }
 
-function clearListItems() {
+function clearCardsContainer() {
   refs.gallery.innerHTML = '';
 }
+// function renderCard(card) {
+//   const markup = cardImage(card);
+//   refs.gallery.innerHTML = markup;
+// }
 
-function hiddenLoadMoreBtn() {
-  refs.loadMoreBtn.classList.add('is-hidden');
-}
+// function onFetchError(error) {
+//   alert('Error!');
+// }
+// const debounce = require('lodash.debounce');
 
-function noHiddenLoadMoreBtn() {
-  refs.loadMoreBtn.classList.remove('is-hidden');
-}
+// refs.searchForm.addEventListener(
+//   'input',
+//   debounce(imageSearchInputHandler, 500),
+// );
+// refs.loadMoreBtn.addEventListener('click', loadMoreBtnHandler);
+
+// function imageSearchInputHandler(e) {
+//   e.preventDefault();
+//   servise.searchQuerry = e.target.value;
+//   if (servise.query === '') {
+//     hiddenLoadMoreBtn();
+//     clearListItems();
+//     return;
+//   }
+
+//   clearListItems();
+//   servise.resetPage();
+
+//   servise.fetchArticles().then(hits => {
+//     const markup = buildListItemsTemplate(hits);
+//     insertListItems(markup);
+//   });
+//   noHiddenLoadMoreBtn();
+// }
+
+// function loadMoreBtnHandler() {
+//   refs.loadMoreBtn.disabled = true;
+//   servise.fetchArticles().then(hits => {
+//     const markup = buildListItemsTemplate(hits);
+//     insertListItems(markup);
+//     refs.loadMoreBtn.disabled = false;
+
+//     window.scrollBy({
+//       top: 940,
+//       left: 100,
+//       behavior: 'smooth',
+//     });
+//   });
+// }
+
+// function insertListItems(items) {
+//   refs.gallery.insertAdjacentHTML('beforeend', items);
+// }
+
+// function buildListItemsTemplate(items) {
+//   return cardImage(items);
+// }
+
+// function clearListItems() {
+//   refs.gallery.innerHTML = '';
+// }
+
+// function hiddenLoadMoreBtn() {
+//   refs.loadMoreBtn.classList.add('is-hidden');
+// }
+
+// function noHiddenLoadMoreBtn() {
+//   refs.loadMoreBtn.classList.remove('is-hidden');
+// }

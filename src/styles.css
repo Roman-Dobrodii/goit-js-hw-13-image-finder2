@@ -23,6 +23,10 @@ body {
   margin-bottom: 24px;
 }
 
+.btn {
+  margin-left: 5px;
+}
+
 .button-load {
   display: block;
   margin-left: auto;
@@ -32,9 +36,9 @@ body {
   border-radius: 50px;
 }
 
-.is-hidden {
+/* .is-hidden {
   display: none;
-}
+} */
 
 /* List */
 
