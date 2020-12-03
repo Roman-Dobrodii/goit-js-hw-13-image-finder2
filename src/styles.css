@@ -39,6 +39,11 @@ body {
   display: none;
 }
 
+/* #sentinel {
+  width: 500px;
+  height: 500px;
+  background-color: tomato;
+} */
 /* List */
 
 .gallery {

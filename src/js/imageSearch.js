@@ -1,17 +1,18 @@
 import CardsService from './apiService';
 import cardImage from '../templates/cardTpl.hbs';
 import refs from './refs';
-import LoadMoreBtn from './load-more-btn';
+// import LoadMoreBtn from './load-more-btn';
+// import './io';
 
-const loadMoreBtn = new LoadMoreBtn({
-  selector: '[data-action="load-more"]',
-  hidden: true,
-});
+// const loadMoreBtn = new LoadMoreBtn({
+//   selector: '[data-action="load-more"]',
+//   hidden: true,
+// });
 
 const cardsService = new CardsService();
 
 refs.searchForm.addEventListener('submit', onSearch);
-loadMoreBtn.refs.button.addEventListener('click', fetchHits);
+// loadMoreBtn.refs.button.addEventListener('click', fetchHits);
 
 function onSearch(e) {
   e.preventDefault();
@@ -22,23 +23,23 @@ function onSearch(e) {
     return alert('Введи что-то нормальное!');
   }
 
-  loadMoreBtn.show();
+  // loadMoreBtn.show();
   cardsService.resetPage();
   clearCardsContainer();
   fetchHits();
 }
 
 function fetchHits() {
-  loadMoreBtn.disable();
+  // loadMoreBtn.disable();
   cardsService.fetchCards().then(hits => {
     appendCardsMarkup(hits);
-    loadMoreBtn.enable();
+    // loadMoreBtn.enable();
 
-    window.scrollBy({
-      top: 1000,
-      left: 100,
-      behavior: 'smooth',
-    });
+    // window.scrollBy({
+    //   top: 1000,
+    //   left: 100,
+    //   behavior: 'smooth',
+    // });
   });
 }
 
@@ -49,3 +50,21 @@ function appendCardsMarkup(hits) {
 function clearCardsContainer() {
   refs.gallery.innerHTML = '';
 }
+
+const onEntry = entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && cardsService.query !== '') {
+      console.log('Hi');
+      cardsService.fetchCards().then(hits => {
+        appendCardsMarkup(hits);
+        // cardsService.incrementPage();
+      });
+    }
+  });
+};
+
+const observer = new IntersectionObserver(onEntry, {
+  rootMargin: '200px',
+});
+
+observer.observe(refs.sentinel);
