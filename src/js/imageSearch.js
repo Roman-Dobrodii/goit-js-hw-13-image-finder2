@@ -1,8 +1,10 @@
 import CardsService from './apiService';
 import cardImage from '../templates/cardTpl.hbs';
 import refs from './refs';
+import '../../node_modules/basiclightbox/dist/basicLightbox.min.css';
+import { onClickImage } from './lightBox';
+
 // import LoadMoreBtn from './load-more-btn';
-// import './io';
 
 // const loadMoreBtn = new LoadMoreBtn({
 //   selector: '[data-action="load-more"]',
@@ -13,6 +15,7 @@ const cardsService = new CardsService();
 
 refs.searchForm.addEventListener('submit', onSearch);
 // loadMoreBtn.refs.button.addEventListener('click', fetchHits);
+refs.gallery.addEventListener('click', onClickImage);
 
 function onSearch(e) {
   e.preventDefault();
